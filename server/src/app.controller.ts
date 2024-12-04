@@ -8,12 +8,13 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 
-let requestCount = 0;
-let lastUp = Date.now();
+
 
 @Controller()
 export class AppController {
   private logger = new Logger(AppController.name);
+  private lastUp = Date.now();
+  private requestCount = 0;
   constructor(private readonly appService: AppService) {}
 
   @Post('api')
@@ -21,16 +22,16 @@ export class AppController {
     const index = body.index;
     const now = Date.now();
 
-    if (now - lastUp >= 1000) {
-      requestCount = 0;
-      lastUp = now;
+    if (now - this.lastUp >= 1000) {
+      this.requestCount = 0;
+      this.lastUp = now;
     }
 
     this.logger.log(`Received request with index: ${index}`);
 
-    requestCount++;
+    this.requestCount++;
 
-    if (requestCount >= 50) {
+    if (this.requestCount >= 50) {
       throw new HttpException(
         'Too Many Requests',
         HttpStatus.TOO_MANY_REQUESTS,
