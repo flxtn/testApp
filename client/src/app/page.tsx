@@ -88,7 +88,7 @@ export function Home() {
         </button>
 
         {results.map((result, index) => (
-          <div key={index}>Request width index: {result}</div>
+          <div key={index}>Request with index: {result}</div>
         ))}
       </div>
     </div>
